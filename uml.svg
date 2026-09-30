@@ -1,0 +1,16 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1050" height="660" viewBox="0 0 1050 660">
+<style>text{font-family:Arial,sans-serif;font-size:15px;fill:#172033}.box{fill:#f8fafc;stroke:#334155;stroke-width:2}.title{font-weight:bold}.line{stroke:#334155;stroke-width:2;fill:none}.label{font-size:13px;fill:#475569}</style>
+<rect class="box" x="370" y="25" width="310" height="95" rx="8"/><text class="title" x="525" y="55" text-anchor="middle">ChoreNotice</text><text x="525" y="82" text-anchor="middle">sender: NoticeSender</text><text x="525" y="103" text-anchor="middle">publish(destination, notice)</text>
+<rect class="box" x="130" y="175" width="300" height="85" rx="8"/><text class="title" x="280" y="210" text-anchor="middle">OneTimeChoreNotice</text><text x="280" y="239" text-anchor="middle">Refined Abstraction</text>
+<rect class="box" x="620" y="175" width="300" height="85" rx="8"/><text class="title" x="770" y="210" text-anchor="middle">WeeklyChoreNotice</text><text x="770" y="239" text-anchor="middle">Refined Abstraction</text>
+<path class="line" d="M460 120 L280 175 M590 120 L770 175"/><text class="label" x="355" y="150">extends</text><text class="label" x="670" y="150">extends</text>
+<rect class="box" x="375" y="350" width="300" height="80" rx="8"/><text class="title" x="525" y="380" text-anchor="middle">NoticeSender</text><text x="525" y="407" text-anchor="middle">send(destination, notice)</text>
+<path class="line" d="M525 120 L525 350"/><text class="label" x="535" y="325">uses interface</text>
+<rect class="box" x="40" y="520" width="220" height="85" rx="8"/><text class="title" x="150" y="553" text-anchor="middle">JsonNoticeSender</text><text x="150" y="580" text-anchor="middle">implements interface</text>
+<rect class="box" x="285" y="520" width="220" height="85" rx="8"/><text class="title" x="395" y="553" text-anchor="middle">CsvNoticeSender</text><text x="395" y="580" text-anchor="middle">implements interface</text>
+<rect class="box" x="530" y="520" width="240" height="85" rx="8"/><text class="title" x="650" y="553" text-anchor="middle">HomeScreenAdapter</text><text x="650" y="580" text-anchor="middle">implements interface</text>
+<rect class="box" x="800" y="520" width="220" height="85" rx="8"/><text class="title" x="910" y="553" text-anchor="middle">OldHomeScreen</text><text x="910" y="580" text-anchor="middle">display(bytes, urgency, name)</text>
+<path class="line" d="M465 430 L150 520 M500 430 L395 520 M550 430 L650 520 M770 562 L800 562"/><text class="label" x="775" y="550">wraps</text>
+<rect class="box" x="730" y="320" width="300" height="110" rx="8"/><text class="title" x="880" y="348" text-anchor="middle">NoticeService</text><text x="880" y="375" text-anchor="middle">senders: Map&lt;String, NoticeSender&gt;</text><text x="880" y="396" text-anchor="middle">notices: Map&lt;NoticeKind, Function&gt;</text><text x="880" y="417" text-anchor="middle">publish(request)</text><path class="line" d="M730 385 L675 385 M880 320 L880 260"/><text class="label" x="685" y="375">selects</text><text class="label" x="890" y="295">creates</text>
+<text x="525" y="640" text-anchor="middle">NoticeService picks the sender and the notice type from the request using maps</text>
+</svg>

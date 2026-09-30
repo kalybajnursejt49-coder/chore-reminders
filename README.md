@@ -1,0 +1,17 @@
+# Home chore reminders
+
+Small Java 17 project demonstrating Bridge and Adapter with runtime delivery selection.
+
+Run the unit tests with:
+
+```text
+mvn test
+```
+
+Run the demo with:
+
+```text
+mvn compile exec:java -Dexec.mainClass=edu.student.chores.Main
+```
+
+The UML diagram is in `uml.svg`; the design rationale is in `design-rationale.md`.
