@@ -16,7 +16,7 @@ public class HomeScreenAdapter implements NoticeSender {
         try {
             code = screen.display(message.getBytes(StandardCharsets.UTF_8), notice.priority(), destination);
         } catch (OldHomeScreenException exception) {
-            throw new DeliveryException("Home screen is not available");
+            throw new DeliveryException("Home screen is not available", exception);
         }
         if (code != 0) {
             throw new DeliveryException(describe(code));

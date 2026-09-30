@@ -18,8 +18,12 @@ The chosen module is **dynamic implementor selection**. `NoticeService` looks up
 
 ## Open/Closed Principle
 
-`NoticeService` gets two maps in its constructor: format to sender, and kind to a function that creates a `ChoreNotice` from a sender. A new delivery method is one new `NoticeSender` class and one new map entry. A new reminder type is one new `ChoreNotice` subclass, one new `NoticeKind` value and one new map entry. `NoticeService` and the existing classes do not change. The test `newSenderAndNewKindNeedNoChangeInService` shows this.
+`NoticeService` gets two maps in its constructor: format to sender, and a string kind key to a function that creates a `ChoreNotice` from a sender. There is no closed `NoticeKind` enum to edit. A new reminder type is one new `ChoreNotice` subclass plus a registry entry at application composition. The service does not change. A new delivery method is one new `NoticeSender` implementation plus a sender registry entry. The test `newSenderAndNewKindNeedNoChangeInService` registers `MONTHLY` and `XML` together without changing the service.
+
+The request carries its destination, so the service can route to any configured target. The legacy adapter can therefore receive a blank destination and translate the old screen's error code 41 through the service path.
+
+JSON strings are escaped according to JSON string rules. CSV fields containing commas, quotes, or line breaks are quoted and embedded quotes are doubled. Both output formats include the priority.
 
 ## Limitation
 
-The format is a string, so an invalid format is only found when the request is handled. For a larger program, an enum would reduce this risk.
+Format and kind are registry keys, so invalid values are rejected when the request is handled. This deliberate choice keeps type additions open to extension without editing a shared enum.
