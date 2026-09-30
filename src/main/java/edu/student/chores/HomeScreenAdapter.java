@@ -11,7 +11,7 @@ public class HomeScreenAdapter implements NoticeSender {
 
     @Override
     public void send(String destination, Notice notice) throws DeliveryException {
-        String message = notice.chore() + "|" + notice.dueDate() + "|" + notice.person();
+        String message = notice.chore() + "|" + notice.dueDate() + "|" + notice.person() + "|" + notice.cadence();
         int code;
         try {
             code = screen.display(message.getBytes(StandardCharsets.UTF_8), notice.priority(), destination);

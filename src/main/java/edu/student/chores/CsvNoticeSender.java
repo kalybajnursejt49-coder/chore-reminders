@@ -4,7 +4,7 @@ public class CsvNoticeSender implements NoticeSender {
     @Override
     public void send(String destination, Notice notice) {
         String row = csv(notice.chore()) + "," + csv(notice.dueDate()) + "," + csv(notice.person())
-                + "," + notice.priority();
+                + "," + notice.priority() + "," + csv(notice.cadence());
         System.out.println("CSV to " + destination + ": " + row);
     }
 

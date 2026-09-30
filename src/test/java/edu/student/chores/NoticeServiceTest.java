@@ -37,12 +37,12 @@ class NoticeServiceTest {
     }
 
     @Test
-    void weeklyNoticeAddsWeeklyLabel() throws Exception {
+    void weeklyNoticeSetsWeeklyCadence() throws Exception {
         NoticeSender sender = mock(NoticeSender.class);
 
         new WeeklyChoreNotice(sender).publish("home-screen", bins);
 
-        verify(sender).send("home-screen", new Notice("Weekly: Take out the bins", "2026-09-28", "Sam", 1));
+        verify(sender).send("home-screen", new Notice("Take out the bins", "2026-09-28", "Sam", 1, "WEEKLY"));
     }
 
     @Test
@@ -64,7 +64,7 @@ class NoticeServiceTest {
 
         service.publish(new NoticeRequest(bins, "JSON", "WEEKLY", "home-screen"));
 
-        verify(json).send("home-screen", new Notice("Weekly: Take out the bins", "2026-09-28", "Sam", 1));
+        verify(json).send("home-screen", new Notice("Take out the bins", "2026-09-28", "Sam", 1, "WEEKLY"));
     }
 
     @Test
@@ -108,7 +108,7 @@ class NoticeServiceTest {
 
         new HomeScreenAdapter(screen).send("home-screen", plants);
 
-        verify(screen).display("Water the plants|2026-09-28|Alex".getBytes(), 2, "home-screen");
+        verify(screen).display("Water the plants|2026-09-28|Alex|ONCE".getBytes(), 2, "home-screen");
     }
 
     @Test
@@ -179,7 +179,7 @@ class NoticeServiceTest {
             System.setOut(original);
         }
 
-        assertEquals("JSON to home-screen: {\"chore\":\"He said \\\"go\\\"\",\"dueDate\":\"today\",\"person\":\"A\\\\B\",\"priority\":3}",
+        assertEquals("JSON to home-screen: {\"chore\":\"He said \\\"go\\\"\",\"dueDate\":\"today\",\"person\":\"A\\\\B\",\"priority\":3,\"cadence\":\"ONCE\"}",
                 output.toString(StandardCharsets.UTF_8).strip());
     }
 
@@ -194,8 +194,15 @@ class NoticeServiceTest {
             System.setOut(original);
         }
 
-        assertEquals("CSV to home-screen: \"Sweep, then mop\",today,\"Sam \"\"S\"\"\",2",
+        assertEquals("CSV to home-screen: \"Sweep, then mop\",today,\"Sam \"\"S\"\"\",2,ONCE",
                 output.toString(StandardCharsets.UTF_8).strip());
+    }
+
+    @Test
+    void noticeRejectsNullRequiredFields() {
+        assertThrows(NullPointerException.class, () -> new Notice(null, "today", "Sam", 1));
+        assertThrows(NullPointerException.class, () -> new Notice("Sweep", "today", null, 1));
+        assertThrows(NullPointerException.class, () -> new Notice("Sweep", null, "Sam", 1));
     }
 }
 

@@ -7,6 +7,7 @@ public class OneTimeChoreNotice extends ChoreNotice {
 
     @Override
     public void publish(String destination, Notice notice) throws DeliveryException {
-        sender.send(destination, notice);
+        Notice oneTime = new Notice(notice.chore(), notice.dueDate(), notice.person(), notice.priority(), "ONCE");
+        sender.send(destination, oneTime);
     }
 }

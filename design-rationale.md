@@ -6,7 +6,7 @@ This program sends reminders about chores at home. A reminder can be for a one-t
 
 ## Why both patterns are needed
 
-Bridge separates the kind of reminder from the way it is delivered. `OneTimeChoreNotice` and `WeeklyChoreNotice` are the two refined abstractions. Both use the `NoticeSender` interface. This lets a new reminder type or delivery method be added without creating a class for every possible combination.
+Bridge separates reminder cadence from delivery format. `OneTimeChoreNotice` sends a notice with cadence `ONCE`; `WeeklyChoreNotice` sets cadence to `WEEKLY`. The cadence is carried in `Notice` and encoded by the JSON and CSV senders (and included in the legacy screen message). The implementations therefore vary the reminder semantics while using the same delivery interface, without making a sender class for every cadence and format combination.
 
 The old home screen has a different method: it expects message bytes, an urgency number, and the screen name in that order. It reports errors with integer codes and an unchecked `OldHomeScreenException`, while the other senders use `NoticeSender` and its `DeliveryException`. `HomeScreenAdapter` converts the reminder into bytes, calls the old method, and translates every error into a `DeliveryException` with a plain message. No error code and no old exception reaches the caller. The old screen class is not modified.
 
@@ -22,8 +22,8 @@ The chosen module is **dynamic implementor selection**. `NoticeService` looks up
 
 The request carries its destination, so the service can route to any configured target. The legacy adapter can therefore receive a blank destination and translate the old screen's error code 41 through the service path.
 
-JSON strings are escaped according to JSON string rules. CSV fields containing commas, quotes, or line breaks are quoted and embedded quotes are doubled. Both output formats include the priority.
+JSON strings are escaped according to JSON string rules. CSV fields containing commas, quotes, or line breaks are quoted and embedded quotes are doubled. Both output formats include priority and cadence. `Notice` rejects null chore, date, person, or cadence values when constructed.
 
 ## Limitation
 
-Format and kind are registry keys, so invalid values are rejected when the request is handled. This deliberate choice keeps type additions open to extension without editing a shared enum.
+Format and kind are registry keys, so misspellings are detected only when a request is handled. Also, weekly cadence is metadata for the receiving system: this example has no scheduler and does not create future jobs. Adding scheduling would require a separate component that consumes the cadence and due date.

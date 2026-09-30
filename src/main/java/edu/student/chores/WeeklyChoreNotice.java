@@ -7,7 +7,7 @@ public class WeeklyChoreNotice extends ChoreNotice {
 
     @Override
     public void publish(String destination, Notice notice) throws DeliveryException {
-        Notice weekly = new Notice("Weekly: " + notice.chore(), notice.dueDate(), notice.person(), notice.priority());
+        Notice weekly = new Notice(notice.chore(), notice.dueDate(), notice.person(), notice.priority(), "WEEKLY");
         sender.send(destination, weekly);
     }
 }
